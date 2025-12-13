@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'newsletters',
     'core',
     'accounts',
+    'subscribers',
 
 ]
 
