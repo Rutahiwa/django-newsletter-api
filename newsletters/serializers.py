@@ -1,9 +1,9 @@
 from rest_framework import serializers
 from .models import Newsletter
-from subscribers.models import Subscriber  # adjust path if different
+from subscribers.models import Subscriber  
 
 class NewsletterSerializer(serializers.ModelSerializer):
-    owner = serializers.PrimaryKeyRelatedField(read_only=True)
+    admin = serializers.PrimaryKeyRelatedField(read_only=True)
     recipients = serializers.PrimaryKeyRelatedField(
         many=True,
         queryset=Subscriber.objects.all(),
@@ -17,7 +17,7 @@ class NewsletterSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         # Assign the logged-in user automatically
-        validated_data['owner'] = self.context['request'].user
+        validated_data['admin'] = self.context['request'].user
         recipients_data = validated_data.pop('recipients', [])
         newsletter = super().create(validated_data)
         newsletter.recipients.set(recipients_data)

@@ -4,7 +4,7 @@ from subscribers.models import Subscriber
 
 
 class Newsletter(models.Model):
-    owner = models.ForeignKey(
+    admin = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="newsletters"
@@ -14,6 +14,14 @@ class Newsletter(models.Model):
     recipients = models.ManyToManyField(Subscriber)
     created_at = models.DateTimeField(auto_now_add=True)
     sent_at = models.DateTimeField(null=True, blank=True)
+    status = models.CharField(
+        max_length=20,
+        choices=[
+            ('draft', 'Draft'),
+            ('sent', 'Sent'),
+        ],
+        default='draft'
+    )
 
     def __str__(self):
         return self.title
